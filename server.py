@@ -24,26 +24,26 @@ class Location(Resource):
         week_begin = datetime.datetime(week_begin.year, week_begin.month, week_begin.day)
         week_end = week_begin + datetime.timedelta(days = 7)
 
-        meals = coll.find({ 
+        dishes = coll.find({ 
             "location": location, 
             "meal": meal,
             "date": { "$gte": week_begin, "$lt": week_end }
         }).sort("station")
 
         stations = {}
-        for meal in meals:
-            if meal['station'] not in stations:
-                stations[meal['station']] = []
+        for dish in dishes:
+            if dish['station'] not in stations:
+                stations[dish['station']] = []
             
-            stations[meal['station']].append({ 
-                "title": meal['title'],
-                "date": str(meal['date'])
+            stations[dish['station']].append({ 
+                "title": dish['title'],
+                "date": str(dish['date'])
             })
 
         return { 
             "status": 200,
             "stations": stations,
-            "meal": "lunch"
+            "meal": meal
         }
 
 api.add_resource(Location, "/v1/location/<string:location>/<string:meal>")
