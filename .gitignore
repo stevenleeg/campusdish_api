@@ -3,3 +3,5 @@ include
 lib
 *.pyc
 *.swp
+.env
+.Python
