@@ -43,10 +43,10 @@ class DishSpider(BaseSpider):
         # And now each menu for the station
         #
         one_day = datetime.timedelta(1)
+        meal_items = []
         for i, station in enumerate(stations):
             # Get a reference to the beginning of the week
             current = datetime.date.today()
-            print "subtr: %s %d" % (current, (current.weekday() + 1) % 6)
             current = current - datetime.timedelta(days = (current.weekday() + 1 % 6))
 
             station_n = (i + 1) * 2
@@ -56,7 +56,19 @@ class DishSpider(BaseSpider):
             for day in days:
                 meals = day.select("table/tr/td/div[@class='menuTxt']/table/tr/td[1]/a/text()").extract()
                 print "\t%s: %s" % (current.strftime("%m-%d-%y"), meals)
+
+                # Create the dish
+                for meal in meals:
+                    item = Dish()
+                    item['location'] = response.meta['dining_hall']
+                    item['station'] = station
+                    item['title'] = meal.lower()
+                    item['date'] = current
+                    meal_items.append(item)
+
                 current += one_day
+
+        return meal_items
 
     def start_requests(self):
         danforth = Request(HALL_MENU_URLS["danforth"])
