@@ -2,7 +2,7 @@ from scrapy.spider import BaseSpider
 from scrapy.http import Request
 from scrapy.selector import HtmlXPathSelector
 from scraper.items import Dish
-import re, os
+import re, os, datetime
 
 HALL_MENU_URLS = {
     "danforth": "http://www.campusdish.com/en-US/CSNE/Rochester/Menus/DanforthFreshFoodCompany.htm",
@@ -42,15 +42,21 @@ class DishSpider(BaseSpider):
         #
         # And now each menu for the station
         #
+        one_day = datetime.timedelta(1)
         for i, station in enumerate(stations):
+            # Get a reference to the beginning of the week
+            current = datetime.date.today()
+            print "subtr: %s %d" % (current, (current.weekday() + 1) % 6)
+            current = current - datetime.timedelta(days = (current.weekday() + 1 % 6))
+
             station_n = (i + 1) * 2
-            days = main_data.select("table[%d]/tr/td" % station_n)
+            days = main_data.select("table[%d]/tr[2]/td" % station_n)
 
             print "Station %s meals:" % station
             for day in days:
-                meals = day.select("table/tr/td/div[@class='menuTxt']/table/tr/td/a/text()").extract()
-                if len(meals) > 0:
-                    print "\t%s" % meals
+                meals = day.select("table/tr/td/div[@class='menuTxt']/table/tr/td[1]/a/text()").extract()
+                print "\t%s: %s" % (current.strftime("%m-%d-%y"), meals)
+                current += one_day
 
     def start_requests(self):
         danforth = Request(HALL_MENU_URLS["danforth"])
