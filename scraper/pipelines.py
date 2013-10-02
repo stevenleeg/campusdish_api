@@ -1,28 +1,36 @@
-from sqlalchemy.orm import sessionmaker
+from pymongo import MongoClient
 from scrapy.exceptions import DropItem
-from model import Dish, db_connect, create_table
+import hashlib, os, datetime
 
-class PostgresPipeline(object):
+class MongoPipeline(object):
     def open_spider(self, spider):
-        engine = db_connect()
-        create_table(engine)
-        self.Session = sessionmaker(bind = engine)
+        self.conn = MongoClient(os.environ['DB_HOST'], int(os.environ['DB_PORT']))
+        self.db = self.conn['cd_api']
+        self.dishes = self.db['dishes']
 
     def process_item(self, item, spider):
-        print "%s::%s::%s::%s" % (item['location'], item['station'], item['date'], item['title'])
-        session = self.Session()
-        item = Dish(**item)
-        item.generate_id()
+        item_hash = hashlib.md5(
+            item['location'] 
+            + item['station'] 
+            + item['title'] 
+            + str(item['date'])
+        )
+        
+        # Does this already exist in the database?
+        if self.dishes.find_one({ "_id": item_hash.hexdigest() }) != None:
+            raise DropItem("Item already exists in database")
 
-        # See if it already exists
-        count = session.query(Dish).filter(Dish.id == item.id).count()
-        if count != 0:
-            print "Skipping!"
-            session.close()
-            return item
+        # Convert date to datetime for BSON encoding
+        date = datetime.datetime(item['date'].year, item['date'].month, item['date'].day)
 
-        session.add(item)
-        session.commit()
-        session.close()
+        db_item = {
+            "_id": item_hash.hexdigest(),
+            "location": item['location'],
+            "station": item['station'],
+            "title": item['title'],
+            "date": date
+        }
+
+        self.dishes.insert(db_item)
 
         return item

@@ -72,7 +72,7 @@ class DishSpider(BaseSpider):
 
     def start_requests(self):
         danforth = Request(HALL_MENU_URLS["danforth"])
-        danforth.meta["dining_hall"] = "Danforth"
+        danforth.meta["dining_hall"] = "danforth"
         douglass = Request(HALL_MENU_URLS["douglass"])
-        douglass.meta["dining_hall"] = "Douglass"
+        douglass.meta["dining_hall"] = "douglass"
         return [danforth, douglass]
