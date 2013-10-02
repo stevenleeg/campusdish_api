@@ -12,6 +12,7 @@ class MongoPipeline(object):
         item_hash = hashlib.md5(
             item['location'] 
             + item['station'] 
+            + item['meal']
             + item['title'] 
             + str(item['date'])
         )
@@ -27,6 +28,7 @@ class MongoPipeline(object):
             "_id": item_hash.hexdigest(),
             "location": item['location'],
             "station": item['station'],
+            "meal": item['meal'],
             "title": item['title'],
             "date": date
         }

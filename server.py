@@ -16,7 +16,7 @@ def index():
     return redirect("https://github.com/stevenleeg/campusdish_api/blob/master/README.md")
 
 class Location(Resource):
-    def get(self, location):
+    def get(self, location, meal):
         coll = g.db['dishes']
 
         current = datetime.date.today()
@@ -26,6 +26,7 @@ class Location(Resource):
 
         meals = coll.find({ 
             "location": location, 
+            "meal": meal,
             "date": { "$gte": week_begin, "$lt": week_end }
         }).sort("station")
 
@@ -39,9 +40,13 @@ class Location(Resource):
                 "date": str(meal['date'])
             })
 
-        return { "location": stations }
+        return { 
+            "status": 200,
+            "stations": stations,
+            "meal": "lunch"
+        }
 
-api.add_resource(Location, "/v1/location/<string:location>")
+api.add_resource(Location, "/v1/location/<string:location>/<string:meal>")
 
 if __name__ == "__main__":
     app.run(debug = True)

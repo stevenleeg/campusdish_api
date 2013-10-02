@@ -62,6 +62,7 @@ class DishSpider(BaseSpider):
                     item = Dish()
                     item['location'] = response.meta['dining_hall']
                     item['station'] = station
+                    item['meal'] = current_meal
                     item['title'] = meal.lower()
                     item['date'] = current
                     meal_items.append(item)
