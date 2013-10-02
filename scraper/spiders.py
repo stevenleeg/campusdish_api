@@ -10,7 +10,7 @@ HALLS = {
 }
 URL_LOCATIONS = {
     "douglass": "Douglass%20Dining%20Center",
-    "douglass": "Danforth%20Fresh%20Food%20Company"
+    "danforth": "Danforth%20Fresh%20Food%20Company"
 }
 BASE_URL = "http://www.campusdish.com/en-US/CSNE/Rochester/Menus/"
 ORG_ID = 195030
@@ -36,7 +36,7 @@ class DishSpider(BaseSpider):
             for meal in meals_available:
                 if(meal == current_meal_id):
                     continue
-                # ?LocationName=Douglass%20Dining%20Center&MealID=17&OrgID=195030&Date=9_29_2013&ShowPrice=False&ShowNutrition=True
+
                 req = Request(
                     BASE_URL + HALLS[response.meta["dining_hall"]] + "?"
                     + "LocationName=%s&" % URL_LOCATIONS[response.meta["dining_hall"]]
@@ -90,6 +90,7 @@ class DishSpider(BaseSpider):
                     item['meal'] = current_meal
                     item['title'] = meal.lower()
                     item['date'] = current
+
                     yield item
 
                 current += one_day
