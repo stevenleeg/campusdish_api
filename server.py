@@ -37,7 +37,7 @@ class Location(Resource):
             
             stations[dish['station']].append({ 
                 "title": dish['title'],
-                "date": str(dish['date'])
+                "date": str(dish['date'])[0:10]
             })
 
         return { 
