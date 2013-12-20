@@ -27,7 +27,8 @@ class Location(Resource):
         dishes = coll.find({ 
             "location": location, 
             "meal": meal,
-            "date": { "$gte": week_begin, "$lt": week_end }
+            #"date": { "$gte": week_begin, "$lt": week_end }
+            "date": datetime.datetime(current.year, current.month, current.day),
         }).sort("station")
 
         stations = {}
