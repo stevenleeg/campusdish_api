@@ -6,11 +6,13 @@ import re, os, datetime
 
 HALLS = {
     "danforth": "DanforthFreshFoodCompany.htm",
-    "douglass": "DouglassDiningCenter.htm"
+    "douglass": "DouglassDiningCenter.htm",
+    "commons":  "TheCommons.htm",
 }
 URL_LOCATIONS = {
     "douglass": "Douglass%20Dining%20Center",
-    "danforth": "Danforth%20Fresh%20Food%20Company"
+    "danforth": "Danforth%20Fresh%20Food%20Company",
+    "commons":  "The%20Commons",
 }
 BASE_URL = "http://www.campusdish.com/en-US/CSNE/Rochester/Menus/"
 ORG_ID = 195030
@@ -98,6 +100,10 @@ class DishSpider(BaseSpider):
     def start_requests(self):
         danforth = Request(BASE_URL + HALLS["danforth"])
         danforth.meta["dining_hall"] = "danforth"
+
         douglass = Request(BASE_URL + HALLS["douglass"])
         douglass.meta["dining_hall"] = "douglass"
-        return [danforth, douglass]
+
+        commons = Request(BASE_URL + HALLS["commons"])
+        commons.meta["dining_hall"] = "commons"
+        return [danforth, douglass, commons]

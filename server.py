@@ -24,11 +24,16 @@ class Location(Resource):
         week_begin = datetime.datetime(week_begin.year, week_begin.month, week_begin.day)
         week_end = week_begin + datetime.timedelta(days = 7)
 
+        search_date = datetime.datetime(current.year, current.month, current.day)
+
+        if location == "commons":
+            search_date = week_begin
+
         dishes = coll.find({ 
             "location": location, 
             "meal": meal,
             #"date": { "$gte": week_begin, "$lt": week_end }
-            "date": datetime.datetime(current.year, current.month, current.day),
+            "date": search_date,
         }).sort("station")
 
         stations = {}
