@@ -1,7 +1,7 @@
 from scrapy.spider import BaseSpider
 from scrapy.http import Request, FormRequest
 from scrapy.selector import HtmlXPathSelector
-from scraper.items import Dish
+from campusdish_scraper.items import Dish
 import re, os, datetime
 
 HALLS = {
