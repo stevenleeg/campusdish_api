@@ -1,4 +1,6 @@
-from campusdish_api import db
+from flask.ext.sqlalchemy import SQLAlchemy
+from campusdish_api import app
+db = SQLAlchemy(app)
 
 class DiningHall(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
@@ -31,10 +33,25 @@ class Dish(db.Model):
         self.station = station
         self.station_id = station.id
 
+class Meal(db.Model):
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    name = db.Column(db.String)
+
+    def __init__(self, name):
+        self.name = name
+
 class DishInstance(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     date = db.Column(db.Date)
-    meal = db.Column(db.String)
+
+    meal_id = db.Column(db.Integer, db.ForeignKey("meal.id"))
+    meal = db.relationship(
+        'Meal', backref=db.backref("dish_instances"))
+
+    station_id = db.Column(db.Integer, db.ForeignKey("station.id"))
+    station = db.relationship(
+        'Station', backref=db.backref("dish_instances"))
+
     dish_id = db.Column(db.Integer, db.ForeignKey("dish.id"))
     dish = db.relationship(
         'Dish', backref=db.backref("instances"))
@@ -42,5 +59,11 @@ class DishInstance(db.Model):
     def __init__(self, dish, date, meal):
         self.dish = dish
         self.dish_id = dish.id
+
         self.meal = meal
+        self.meal_id = meal.id
+
+        self.station = self.dish.station
+        self.station_id = self.dish.station_id
+
         self.date = date
