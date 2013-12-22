@@ -1,6 +1,7 @@
 from scrapy.spider import BaseSpider
 from scrapy.http import Request, FormRequest
 from scrapy.selector import HtmlXPathSelector
+from campusdish_api.models import DiningHall
 from campusdish_scraper.items import Dish
 import re, os, datetime
 
@@ -39,11 +40,12 @@ class DishSpider(BaseSpider):
                 if(meal == current_meal_id):
                     continue
 
+                dining_hall = response.meta['dining_hall']
                 req = Request(
-                    BASE_URL + HALLS[response.meta["dining_hall"]] + "?"
-                    + "LocationName=%s&" % URL_LOCATIONS[response.meta["dining_hall"]]
+                    dining_hall.menu_url + "?"
+                    + "LocationName=%s&" % dining_hall.page_str
                     + "MealID=%d&" % meal
-                    + "OrgID=%d&" % ORG_ID
+                    + "OrgID=%s&" % dining_hall.org_id
                     + "Date=%d_%d_%d&" % (wk_begin.month, wk_begin.day, wk_begin.year)
                     + "ShowPrice=False&ShowNutrition=True",
                     callback = self.parse
@@ -87,7 +89,7 @@ class DishSpider(BaseSpider):
                 # Create the dish
                 for meal in meals:
                     item = Dish()
-                    item['location'] = response.meta['dining_hall']
+                    item['location'] = response.meta['dining_hall'].name
                     item['station'] = station
                     item['meal'] = current_meal
                     item['title'] = meal.lower()
@@ -98,12 +100,11 @@ class DishSpider(BaseSpider):
                 current += one_day
 
     def start_requests(self):
-        danforth = Request(BASE_URL + HALLS["danforth"])
-        danforth.meta["dining_hall"] = "danforth"
+        dining_halls = DiningHall.query.all()
+        requests = []
+        for dining_hall in dining_halls:
+            req = Request(dining_hall.menu_url)
+            req.meta["dining_hall"] = dining_hall
+            requests.append(req)
 
-        douglass = Request(BASE_URL + HALLS["douglass"])
-        douglass.meta["dining_hall"] = "douglass"
-
-        commons = Request(BASE_URL + HALLS["commons"])
-        commons.meta["dining_hall"] = "commons"
-        return [danforth, douglass, commons]
+        return requests
