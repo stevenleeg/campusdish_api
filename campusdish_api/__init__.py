@@ -1,8 +1,8 @@
 from flask import Flask, redirect, g
-from flask.ext.restful import Resource, Api
+from flask.ext.restful import Api
 from flask.ext.sqlalchemy import SQLAlchemy
-from pymongo import MongoClient
-import os, datetime
+from campusdish_api.resources import DiningHall
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,30 +19,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 db = SQLAlchemy(app)
 import models
 
-@app.route("/")
-def index():
-    return redirect("https://github.com/stevenleeg/campusdish_api/blob/master/README.md")
-
-class Location(Resource):
-    def get(self, location, meal):
-
-        stations = {}
-        for dish in dishes:
-            if dish['station'] not in stations:
-                stations[dish['station']] = []
-            
-            stations[dish['station']].append({ 
-                "title": dish['title'],
-                "date": str(dish['date'])[0:10]
-            })
-
-        return { 
-            "status": 200,
-            "stations": stations,
-            "meal": meal
-        }
-
-api.add_resource(Location, "/v1/location/<string:location>/<string:meal>")
+# Add resources
+api.add_resource(DiningHall, "/v1/dining_hall/<string:location>/<string:meal>")
 
 if __name__ == "__main__":
     app.run(debug = True)

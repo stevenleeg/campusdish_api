@@ -5,7 +5,7 @@ install_reqs = parse_requirements("requirements.txt")
 reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
-    name="campushdish_api",
+    name="campusdish_api",
     version="0.1",
     url="http://github.com/stevenleeg/campusdish_api",
     license="MIT",
