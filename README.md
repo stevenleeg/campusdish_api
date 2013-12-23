@@ -12,73 +12,6 @@ Documentation
 
 **The base URL for all endpoints is `http://dining.stevegattuso.me`.**
 
-## `/v0/dining_hall`
-Returns a list of dining halls available.
-
-**Parameters:** None
-
-Example response:
-```json
-{
-    "dining_halls": [
-        {
-            "name": "Danforth"
-        }, 
-        {
-            "name": "Douglass"
-        }, 
-        {
-            "name": "Commons"
-        }
-    ], 
-    "status": 200
-}
-```
-
-## `/v0/meal`
-Returns a list of meal options available.
-
-**Parameters:** None
-
-Example response:
-```json
-{
-    "meals": [
-        {
-            "name": "lunch"
-        }, 
-        {
-            "name": "dinner"
-        }
-    ], 
-    "status": 200
-}
-```
-
-## `/v0/schedule`
-Returns a schedule for each dining hall.
-
-```json
-{
-    "dining_halls": {
-        "Commons": {
-            "next_open": null, 
-            "state": false
-        }, 
-        "Danforth": {
-            "closes": "20:00:00", 
-            "opens": "04:30:00", 
-            "state": true
-        }, 
-        "Douglass": {
-            "next_open": "2014-01-15 07:00:00", 
-            "state": false
-        }
-    }, 
-    "status": 200
-}
-```
-
 ## `/v0/dining_halls/<dining_hall>/<meal>`
 Returns a menu for the given dining hall at the given meal time.
 
@@ -134,6 +67,73 @@ Example response:
     "status": 200
 }
 
+```
+
+## `/v0/dining_hall`
+Returns a list of dining halls available.
+
+**Parameters:** None
+
+Example response:
+```json
+{
+    "dining_halls": [
+        {
+            "name": "Danforth"
+        }, 
+        {
+            "name": "Douglass"
+        }, 
+        {
+            "name": "Commons"
+        }
+    ], 
+    "status": 200
+}
+```
+
+## `/v0/meal`
+Returns a list of meal options available.
+
+**Parameters:** None
+
+Example response:
+```json
+{
+    "meals": [
+        {
+            "name": "lunch"
+        }, 
+        {
+            "name": "dinner"
+        }
+    ], 
+    "status": 200
+}
+```
+
+## `/v0/schedule`
+Returns a schedule for each dining hall.
+
+```json
+{
+    "dining_halls": {
+        "Commons": {
+            "next_open": null, 
+            "state": false
+        }, 
+        "Danforth": {
+            "closes": "20:00:00", 
+            "opened": "04:30:00", 
+            "state": true
+        }, 
+        "Douglass": {
+            "next_open": "2014-01-15 07:00:00", 
+            "state": false
+        }
+    }, 
+    "status": 200
+}
 ```
 
 Feedback

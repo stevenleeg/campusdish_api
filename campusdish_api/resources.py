@@ -77,7 +77,7 @@ class ScheduleResource(Resource):
             if state != False:
                 resp[hall.name] = {
                     "state": True,
-                    "opens": str(state.open_time),
+                    "opened": str(state.open_time),
                     "closes": str(state.close_time),
                 }
             else:
