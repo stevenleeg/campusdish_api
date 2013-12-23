@@ -5,19 +5,6 @@ from campusdish_api.models import DiningHall
 from campusdish_scraper.items import Dish
 import re, os, datetime
 
-HALLS = {
-    "danforth": "DanforthFreshFoodCompany.htm",
-    "douglass": "DouglassDiningCenter.htm",
-    "commons":  "TheCommons.htm",
-}
-URL_LOCATIONS = {
-    "douglass": "Douglass%20Dining%20Center",
-    "danforth": "Danforth%20Fresh%20Food%20Company",
-    "commons":  "The%20Commons",
-}
-BASE_URL = "http://www.campusdish.com/en-US/CSNE/Rochester/Menus/"
-ORG_ID = 195030
-
 class DishSpider(BaseSpider):
     name = "dish_spider"
     allowed_domains = ["campusdish.com"]
