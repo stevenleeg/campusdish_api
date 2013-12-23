@@ -36,3 +36,33 @@ class DiningHallResource(Resource):
             "meal": meal.name
         }
 
+
+class DiningHallsResource(Resource):
+    def get(self):
+        dining_halls = []
+        q_dining_halls = DiningHall.query.all()
+
+        for dining_hall in q_dining_halls:
+            dining_halls.append({
+                "name": dining_hall.name,
+            })
+
+        return {
+            "status": 200,
+            "dining_halls": dining_halls
+        }
+
+class MealsResource(Resource):
+    def get(self):
+        meals = []
+        q_meals = Meal.query.all()
+
+        for meal in q_meals:
+            meals.append({
+                "name": meal.name,
+            })
+
+        return {
+            "status": 200,
+            "meals": meals
+        }
