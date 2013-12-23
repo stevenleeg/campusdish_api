@@ -1,41 +1,38 @@
 from flask.ext.restful import Resource, abort
-import campusdish_api.models as models
+from campusdish_api.models import DiningHall, Meal
+from sqlalchemy import func
 import datetime
 
 class DiningHallResource(Resource):
     def get(self, location, meal):
-        dining_hall = models.DiningHall.query.filer_by(name = location).first()
+        dining_hall = DiningHall.query.filter(
+            func.lower(DiningHall.name) == func.lower(location)).first()
         if dining_hall == None:
             abort(404, message = "Location does not exist")
 
-        meal = models.Meal.query.filter_by(name = meal).first()
+        meal = Meal.query.filter_by(name = meal).first()
         if meal == None:
             abort(404, message = "Invalid meal")
 
-        today = datetime.date.today()
+        date = datetime.date(2013, 12, 21)
 
         stations = {}
-        for station in dining_hall.station:
+        for station in dining_hall.stations:
             dishes = []
 
-            dishes = station.dish_instances.query.filter_by(date = today)
-            for dish in dishes:
+            q_dishes = station.dish_instances.filter_by(date = date).all()
+            for dish in q_dishes:
                 dishes.append({
-                    "title": dish.name,
+                    "title": dish.dish.name,
                 })
-        
-        for dish in dishes:
-            if dish['station'] not in stations:
-                stations[dish['station']] = []
-            
-            stations[dish['station']].append({ 
-                "title": dish['title'],
-                "date": str(dish['date'])[0:10]
-            })
+
+            if len(q_dishes) > 0:
+                stations[station.name] = dishes
 
         return { 
             "status": 200,
+            "date": str(date),
             "stations": stations,
-            "meal": meal
+            "meal": meal.name
         }
 

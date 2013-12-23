@@ -2,7 +2,7 @@ from __future__ import with_statement
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
-from campusdish_api import db
+from campusdish_api.models import db
 import os
 
 # this is the Alembic Config object, which provides

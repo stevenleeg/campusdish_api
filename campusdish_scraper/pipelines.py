@@ -1,5 +1,4 @@
-from campusdish_api.models import DiningHall, Station, Dish, DishInstance, Meal
-from campusdish_api import db 
+from campusdish_api.models import DiningHall, Station, Dish, DishInstance, Meal, db
 from scrapy.exceptions import DropItem
 import hashlib, os, datetime
 
@@ -23,14 +22,6 @@ class SqlAlchemyPipeline(object):
         db.session.remove()
 
     def process_item(self, item, spider):
-        item_hash = hashlib.md5(
-            item['location'] 
-            + item['station'] 
-            + item['meal']
-            + item['title'] 
-            + str(item['date'])
-        )
-        
         dining_hall = self.dining_halls[item['location']]
 
         # Does the station exist yet?
@@ -53,7 +44,7 @@ class SqlAlchemyPipeline(object):
 
         # The meal?
         if item['meal'] not in self.meals:
-            meal = Meal(item['meal'].lower())
+            meal = Meal(item['meal'].lower().strip())
             self.meals[meal.name] = meal
         else:
             meal = self.meals[item['meal']]

@@ -26,7 +26,7 @@ class Dish(db.Model):
     name = db.Column(db.String)
     station_id = db.Column(db.Integer, db.ForeignKey("station.id"))
     station = db.relationship(
-        'Station', backref=db.backref("dishes"))
+        'Station', backref=db.backref("dishes", lazy="dynamic"))
 
     def __init__(self, name, station):
         self.name = name
@@ -46,15 +46,15 @@ class DishInstance(db.Model):
 
     meal_id = db.Column(db.Integer, db.ForeignKey("meal.id"))
     meal = db.relationship(
-        'Meal', backref=db.backref("dish_instances"))
+        'Meal', backref=db.backref("dish_instances", lazy="dynamic"))
 
     station_id = db.Column(db.Integer, db.ForeignKey("station.id"))
     station = db.relationship(
-        'Station', backref=db.backref("dish_instances"))
+        'Station', backref=db.backref("dish_instances", lazy="dynamic"))
 
     dish_id = db.Column(db.Integer, db.ForeignKey("dish.id"))
     dish = db.relationship(
-        'Dish', backref=db.backref("instances"))
+        'Dish', backref=db.backref("instances", lazy="dynamic"))
 
     def __init__(self, dish, date, meal):
         self.dish = dish
