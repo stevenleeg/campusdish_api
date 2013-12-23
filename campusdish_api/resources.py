@@ -66,3 +66,24 @@ class MealsResource(Resource):
             "status": 200,
             "meals": meals
         }
+
+class ScheduleResource(Resource):
+    def get(self):
+        dining_halls = DiningHall.query.all()
+        resp = {}
+        for hall in dining_halls:
+            if hall.name == "Commons":
+                state = "open"
+            else:
+                state = "closed"
+
+            resp[hall.name] = {
+                "state": state,
+                "opens": str(datetime.datetime.now()),
+                "closes": str(datetime.datetime.now())
+            }
+
+        return {
+            "status": 200,
+            "dining_halls": resp,
+        }
