@@ -1,8 +1,8 @@
-bin
 include
 lib
 *.pyc
 *.swp
+.venv
 .env
 .Python
 *.egg-info
