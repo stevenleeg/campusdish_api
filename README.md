@@ -12,7 +12,7 @@ Documentation
 
 **The base URL for all endpoints is `http://dining.stevegattuso.me`.**
 
-## `/v0/dining_halls/<dining_hall>/<meal>`
+## `/v0/dining_hall/<dining_hall>/<meal>`
 Returns a menu for the given dining hall at the given meal time.
 
 **Parameters:**
