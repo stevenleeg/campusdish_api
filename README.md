@@ -55,6 +55,30 @@ Example response:
 }
 ```
 
+## `/v0/schedule`
+Returns a schedule for each dining hall.
+
+```json
+{
+    "dining_halls": {
+        "Commons": {
+            "next_open": null, 
+            "state": false
+        }, 
+        "Danforth": {
+            "closes": "20:00:00", 
+            "opens": "04:30:00", 
+            "state": true
+        }, 
+        "Douglass": {
+            "next_open": "2014-01-15 07:00:00", 
+            "state": false
+        }
+    }, 
+    "status": 200
+}
+```
+
 ## `/v0/dining_halls/<dining_hall>/<meal>`
 Returns a menu for the given dining hall at the given meal time.
 
