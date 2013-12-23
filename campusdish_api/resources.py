@@ -14,7 +14,7 @@ class DiningHallResource(Resource):
         if meal == None:
             abort(404, message = "Invalid meal")
 
-        date = datetime.date(2013, 12, 21)
+        date = datetime.date.today()
 
         stations = {}
         for station in dining_hall.stations:
