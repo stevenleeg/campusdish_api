@@ -72,16 +72,20 @@ class ScheduleResource(Resource):
         dining_halls = DiningHall.query.all()
         resp = {}
         for hall in dining_halls:
-            if hall.name == "Commons":
-                state = "open"
-            else:
-                state = "closed"
 
-            resp[hall.name] = {
-                "state": state,
-                "opens": str(datetime.datetime.now()),
-                "closes": str(datetime.datetime.now())
-            }
+            state = hall.getState()
+            if state != False:
+                resp[hall.name] = {
+                    "state": True,
+                    "opens": str(state.open_time),
+                    "closes": str(state.close_time),
+                }
+            else:
+                next_open = hall.getNextOpen()
+                resp[hall.name] = {
+                    "state": state,
+                    "next_open": str(next_open) if next_open else None,
+                }
 
         return {
             "status": 200,
