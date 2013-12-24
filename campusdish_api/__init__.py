@@ -16,6 +16,7 @@ db_uri = "postgres://%s:%s@%s:%s/%s" % (
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
 import routes
+import admin
 
 if __name__ == "__main__":
     app.run(debug = True)

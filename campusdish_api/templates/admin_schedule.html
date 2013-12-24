@@ -1,0 +1,45 @@
+<h1>Schedule Management</h1>
+<p>Use this page to manage the schedules of various dining halls</p>
+<hr />
+{% for dining_hall in dining_halls %}
+    <h2>{{ dining_hall.name }}</h2>
+
+    <h3>Schedules:</h3>
+    <table>
+        <tr style="font-weight: bold">
+            <td>ID</td>
+            <td>Open time</td>
+            <td>Close time</td>
+            <td>Start date</td>
+            <td>End date</td>
+            <td>Days of week</td>
+            <td>Regular sched?</td>
+        </tr>
+        {% for schedule in dining_hall.schedules %}
+        <tr>
+            <td>{{ schedule.id }}</td>
+            <td>{{ schedule.open_time }}</td>
+            <td>{{ schedule.close_time }}</td>
+            <td>{{ schedule.date_begin }}</td>
+            <td>{{ schedule.date_end }}</td>
+            <td>{{ schedule.days_of_week }}</td>
+            <td>{{ schedule.regular_schedule }}</td>
+        </tr>
+        {% else %}
+        <i>None</i>
+        {% endfor %}
+    </table>
+
+    <h3>Add schedule</h3>
+    <form method="POST" action="">
+        <input type="hidden" name="dining_hall_id" value="{{ dining_hall.id}}" />
+        <input type="text" name="open_time" placeholder="open time" /><br />
+        <input type="text" name="close_time" placeholder="close time" /><br />
+
+        <input type="text" name="date_start" placeholder="date begin" /><br />
+        <input type="text" name="date_end" placeholder="date end" /><br />
+        <input type="text" name="days_of_week" placeholder="days of week" /><br />
+        Regular schedule: <input type="checkbox" name="regular" value="1" /><br />
+        <input type="submit" value="Save"/>
+    </form>
+{% endfor %}
