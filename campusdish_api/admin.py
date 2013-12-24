@@ -7,6 +7,12 @@ import datetime
 @app.route("/admin/schedule", methods=["GET", "POST"])
 @requires_auth
 def admin_schedule():
+    if request.args.get("del", None) != None:
+        sched = DiningHallSchedule.query.get(request.args['del'])
+        if sched != None:
+            db.session.delete(sched)
+            db.session.commit()
+
     if request.method == "POST":
         did = request.form["dining_hall_id"]
         dining_hall = DiningHall.query.get(did)

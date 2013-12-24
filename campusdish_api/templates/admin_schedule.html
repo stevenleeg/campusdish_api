@@ -17,7 +17,7 @@
         </tr>
         {% for schedule in dining_hall.schedules %}
         <tr>
-            <td>{{ schedule.id }}</td>
+            <td><a href="?del={{ schedule.id }}">[X]</a></td>
             <td>{{ schedule.open_time }}</td>
             <td>{{ schedule.close_time }}</td>
             <td>{{ schedule.date_begin }}</td>
