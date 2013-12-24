@@ -26,7 +26,7 @@ class DiningHall(db.Model):
         ids = []
         for schedule in schedules:
             ids.append(schedule.id)
-            dow_str = today.strftime("%a")[0]
+            dow_str = today.strftime("%a")
             if dow_str in schedule.days_of_week and schedule.open_time <= now and schedule.close_time >= now:
                 return schedule
 
