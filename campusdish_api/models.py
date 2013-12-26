@@ -59,7 +59,19 @@ class DiningHall(db.Model):
             schedule.open_time.minute)
 
         return dt
+    
+    def menuAvailable(self, date):
+        """
+        Returns true if there is a menu available for the given datetime.date, 
+        otherwise false.
+        """
+        count = DiningHall.query\
+            .join(DiningHall.stations)\
+            .join(Station.dish_instances)\
+            .filter(DishInstance.date == date)\
+            .count()
 
+        return (count > 0)
         
 class DiningHallSchedule(db.Model):
     """

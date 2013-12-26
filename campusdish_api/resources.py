@@ -81,9 +81,14 @@ class ScheduleResource(Resource):
                 }
             else:
                 next_open = hall.getNextOpen()
+                menu_available = False
+                if next_open != None:
+                    menu_available = hall.menuAvailable(next_open.date())
+
                 resp[hall.name] = {
                     "state": state,
                     "next_open": str(next_open) if next_open else None,
+                    "menu_available": menu_available,
                 }
 
         return {
