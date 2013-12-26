@@ -72,6 +72,9 @@ class DiningHall(db.Model):
             .count()
 
         return (count > 0)
+
+    def __repr__(self):
+        return self.name
         
 class DiningHallSchedule(db.Model):
     """
