@@ -74,7 +74,7 @@ class DiningHall(db.Model):
         return (count > 0)
 
     def __repr__(self):
-        return self.name
+        return self.name.capitalize()
         
 class DiningHallSchedule(db.Model):
     """
@@ -108,6 +108,9 @@ class Station(db.Model):
         self.name = name
         self.dining_hall_id = dining_hall.id
         self.dining_hall = dining_hall
+
+    def __repr__(self):
+        return self.name.capitalize()
     
 class Dish(db.Model):
     """
@@ -126,6 +129,9 @@ class Dish(db.Model):
         self.station = station
         self.station_id = station.id
 
+    def __repr__(self):
+        return self.name.capitalize()
+
 class Meal(db.Model):
     """
     The meal model represents various meals through the day and generally
@@ -136,6 +142,9 @@ class Meal(db.Model):
 
     def __init__(self, name):
         self.name = name
+
+    def __repr__(self):
+        return self.name.capitalize()
 
 class DishInstance(db.Model):
     """

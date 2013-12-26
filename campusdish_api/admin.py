@@ -34,3 +34,5 @@ admin = Admin(app,
 )
 admin.add_view(AuthModelView(DiningHall, db.session)) 
 admin.add_view(AuthModelView(DiningHallSchedule, db.session)) 
+admin.add_view(AuthModelView(Dish, db.session)) 
+admin.add_view(AuthModelView(DishInstance, db.session)) 
