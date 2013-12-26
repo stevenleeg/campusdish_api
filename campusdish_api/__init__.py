@@ -18,5 +18,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 import routes
 import admin
 
+@app.route("/")
+def index():
+    return redirect("https://github.com/stevenleeg/campusdish_api#readme")
+
 if __name__ == "__main__":
     app.run(debug = True)
