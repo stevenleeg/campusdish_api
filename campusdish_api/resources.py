@@ -72,7 +72,6 @@ class ScheduleResource(Resource):
         dining_halls = DiningHall.query.all()
         resp = {}
         for hall in dining_halls:
-
             state = hall.getState()
             if state != False:
                 resp[hall.name] = {

@@ -5,6 +5,11 @@ import datetime
 db = SQLAlchemy(app)
 
 class DiningHall(db.Model):
+    """
+    Represents a dining hall. This is *not* populated by the scraper and must be
+    manually filled. You can find an example of how to populate it in the first
+    database migration script.
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
     menu_url = db.Column(db.String)
@@ -57,6 +62,9 @@ class DiningHall(db.Model):
 
         
 class DiningHallSchedule(db.Model):
+    """
+    Represents all the times that a dining hall is scheduled to be open.
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     dining_hall_id = db.Column(db.Integer, db.ForeignKey("dining_hall.id"))
     dining_hall = db.relationship(
@@ -72,6 +80,9 @@ class DiningHallSchedule(db.Model):
     regular_schedule = db.Column(db.Boolean)
 
 class Station(db.Model):
+    """
+    A station is exactly what you think it is: a station within a dining hall.
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
     dining_hall_id = db.Column(db.Integer, db.ForeignKey("dining_hall.id"))
@@ -84,6 +95,11 @@ class Station(db.Model):
         self.dining_hall = dining_hall
     
 class Dish(db.Model):
+    """
+    A dish is something like pasta, which would be served at the pasta station.
+    This does *not* store the actual menus, just the items that could appear on
+    a menu. Dates that dishes are served are represented by DishInstances
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
     station_id = db.Column(db.Integer, db.ForeignKey("station.id"))
@@ -96,6 +112,10 @@ class Dish(db.Model):
         self.station_id = station.id
 
 class Meal(db.Model):
+    """
+    The meal model represents various meals through the day and generally
+    doesn't change after the first scrape (eg, breakfast, lunch, and dinner).
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
 
@@ -103,6 +123,10 @@ class Meal(db.Model):
         self.name = name
 
 class DishInstance(db.Model):
+    """
+    A dishinstance is an instance of a dish on a particular day's menu and
+    station.
+    """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     date = db.Column(db.Date)
 
