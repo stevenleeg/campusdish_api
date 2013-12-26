@@ -6,3 +6,5 @@ lib
 .env
 .Python
 *.egg-info
+bin/
+!bin/cd_api
