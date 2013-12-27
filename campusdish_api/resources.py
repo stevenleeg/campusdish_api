@@ -1,7 +1,10 @@
-from flask.ext.restful import Resource, abort
+from flask.ext.restful import Api, Resource, abort
 from campusdish_api.models import DiningHall, Meal
+from campusdish_api import app
 from sqlalchemy import func
 import datetime
+
+api = Api(app)
 
 class DiningHallResource(Resource):
     def get(self, location, meal):

@@ -1,7 +1,19 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from campusdish_api import app
-from sqlalchemy import or_, and_
-import datetime
+import datetime, os
+
+#
+# Setup database
+#
+db_uri = "postgres://%s:%s@%s:%s/%s" % (
+    os.environ['DB_USER'],
+    os.environ['DB_PASS'],
+    os.environ['DB_HOST'],
+    os.environ['DB_PORT'],
+    os.environ['DB_NAME'],
+)
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+
 db = SQLAlchemy(app)
 
 class DiningHall(db.Model):

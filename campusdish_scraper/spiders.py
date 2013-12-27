@@ -42,8 +42,6 @@ class DishSpider(BaseSpider):
                 req.meta['terminal'] = True
                 yield req
 
-        print "%s, parsed! Current meal: %s" % (response.meta["dining_hall"], current_meal)
-
         main_data = hxs.select("//div[@id='ucFiveDayMenu_MenuArea']")
         #
         # Let's look at the stations
@@ -51,10 +49,6 @@ class DishSpider(BaseSpider):
         stations_list = main_data.select("table[@class='ConceptTab']")
         stations = [x.lower() for x in stations_list.select("tr[2]/td[1]/text()").extract()]
         
-        print "Stations:"
-        for station in stations:
-            print "\t%s" % station
-
         #
         # And now each menu for the station
         #
@@ -68,10 +62,10 @@ class DishSpider(BaseSpider):
             station_n = (i + 1) * 2
             days = main_data.select("table[%d]/tr[2]/td" % station_n)
 
-            print "Station %s meals:" % station
             for day in days:
-                meals = day.select("table/tr/td/div[@class='menuTxt']/table/tr/td[1]/a/text()").extract()
-                print "\t%s: %s" % (current.strftime("%m-%d-%y"), meals)
+                meals = day\
+                    .select("table/tr/td/div[@class='menuTxt']/table/tr/td[1]/a/text()")\
+                    .extract()
 
                 # Create the dish
                 for meal in meals:

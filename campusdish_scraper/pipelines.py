@@ -1,4 +1,5 @@
-from campusdish_api.models import DiningHall, Station, Dish, DishInstance, Meal, db
+from campusdish_api import db
+from campusdish_api.models import DiningHall, Station, Dish, DishInstance, Meal
 from scrapy.exceptions import DropItem
 import hashlib, os, datetime
 
