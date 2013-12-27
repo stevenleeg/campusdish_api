@@ -35,12 +35,11 @@ class SqlAlchemyPipeline(object):
         
         # Does this dish exist yet?
         dish = Dish.query.filter_by(
-            name = item['title'],
-            station = station,
+            name = item['title']
         ).first()
 
         if dish == None:
-            dish = Dish(item['title'], station)
+            dish = Dish(item['title'])
             db.session.add(dish)
 
         # The meal?
@@ -58,7 +57,7 @@ class SqlAlchemyPipeline(object):
         ).first()
 
         if inst == None:
-            inst = DishInstance(dish, item['date'], meal)
+            inst = DishInstance(dish, item['date'], meal, station)
             db.session.add(inst)
 
         return item

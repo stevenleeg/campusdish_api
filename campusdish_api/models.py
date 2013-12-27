@@ -116,10 +116,11 @@ class Station(db.Model):
     dining_hall = db.relationship(
         'DiningHall', backref=db.backref("stations"))
 
-    def __init__(self, name, dining_hall):
+    def __init__(self, name = None, dining_hall = None):
         self.name = name
-        self.dining_hall_id = dining_hall.id
-        self.dining_hall = dining_hall
+        if dining_hall != None:
+            self.dining_hall_id = dining_hall.id
+            self.dining_hall = dining_hall
 
     def __repr__(self):
         return self.name.capitalize()
@@ -132,14 +133,9 @@ class Dish(db.Model):
     """
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
-    station_id = db.Column(db.Integer, db.ForeignKey("station.id"))
-    station = db.relationship(
-        'Station', backref=db.backref("dishes", lazy="dynamic"))
 
-    def __init__(self, name, station):
+    def __init__(self, name = None):
         self.name = name
-        self.station = station
-        self.station_id = station.id
 
     def __repr__(self):
         return self.name.capitalize()
@@ -152,7 +148,7 @@ class Meal(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String)
 
-    def __init__(self, name):
+    def __init__(self, name = None):
         self.name = name
 
     def __repr__(self):
@@ -178,14 +174,17 @@ class DishInstance(db.Model):
     dish = db.relationship(
         'Dish', backref=db.backref("instances", lazy="dynamic"))
 
-    def __init__(self, dish, date, meal):
-        self.dish = dish
-        self.dish_id = dish.id
+    def __init__(self, dish = None, date = None, meal = None, station = None):
+        if dish != None:
+            self.dish = dish
+            self.dish_id = dish.id
 
-        self.meal = meal
-        self.meal_id = meal.id
+        if meal != None:
+            self.meal = meal
+            self.meal_id = meal.id
 
-        self.station = self.dish.station
-        self.station_id = self.dish.station_id
+        if station != None:
+            self.station = station
+            self.station_id = station.id
 
         self.date = date
