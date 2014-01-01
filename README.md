@@ -12,6 +12,8 @@ Documentation
 
 **The base URL for all endpoints is `http://dining.stevegattuso.me`.**
 
+**Mocking:** If you're working on an application and would like testing data to work with (that isn't affected by dining halls being closed), append `?debug=1` to the end of endpoints to get mocked data. Currently the dining hall and schedule endpoints support this flag.
+
 ## `/v0/dining_hall/<dining_hall>/<meal>`
 Returns a menu for the given dining hall at the given meal time.
 
