@@ -28,7 +28,7 @@ class DiningHall(db.Model):
     page_str = db.Column(db.String)
     org_id = db.Column(db.String)
 
-    def getState(self):
+    def getState(self, debug = False):
         """
         Returns false if the dining hall is closed or a DiningHallSchedule
         if it is open
@@ -36,6 +36,14 @@ class DiningHall(db.Model):
         today = datetime.date.today()
         dt_now = datetime.datetime.now()
         now = datetime.time(dt_now.hour, dt_now.minute)
+
+        # Mock data for testing
+        if debug:
+            schedule = DiningHallSchedule()
+            schedule.open_time = datetime.time(8, 0)
+            schedule.close_time = datetime.time(22, 0)
+            return schedule
+
         schedules = self.schedules.filter(
             DiningHallSchedule.date_begin <= today,  
             DiningHallSchedule.date_end >= today).order_by(DiningHallSchedule.regular_schedule.desc())
@@ -121,6 +129,14 @@ class Station(db.Model):
         if dining_hall != None:
             self.dining_hall_id = dining_hall.id
             self.dining_hall = dining_hall
+
+    def getDishes(self, date, meal, debug = False):
+        if debug:
+            return self.dish_instances.filter_by(meal_id = meal.id).limit(3)
+
+        return self.dish_instances.filter_by(
+            date = date, 
+            meal_id = meal.id).all()
 
     def __repr__(self):
         return self.name.capitalize()

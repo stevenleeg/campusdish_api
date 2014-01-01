@@ -1,4 +1,5 @@
 from flask.ext.restful import Api, Resource, abort
+from flask import request
 from campusdish_api.models import DiningHall, Meal
 from campusdish_api import app
 from sqlalchemy import func
@@ -8,6 +9,8 @@ api = Api(app)
 
 class DiningHallResource(Resource):
     def get(self, location, meal):
+        debug = (request.args.get("debug", False) != False)
+
         dining_hall = DiningHall.query.filter(
             func.lower(DiningHall.name) == func.lower(location)).first()
         if dining_hall == None:
@@ -21,15 +24,15 @@ class DiningHallResource(Resource):
 
         stations = {}
         for station in dining_hall.stations:
+            q_dishes = station.getDishes(date, meal, debug = debug)
             dishes = []
 
-            q_dishes = station.dish_instances.filter_by(date = date).all()
             for dish in q_dishes:
                 dishes.append({
                     "title": dish.dish.name,
                 })
 
-            if len(q_dishes) > 0:
+            if len(dishes) > 0:
                 stations[station.name] = dishes
 
         return { 
@@ -72,10 +75,11 @@ class MealsResource(Resource):
 
 class ScheduleResource(Resource):
     def get(self):
+        debug = (request.args.get("debug", False) != False)
         dining_halls = DiningHall.query.all()
         resp = {}
         for hall in dining_halls:
-            state = hall.getState()
+            state = hall.getState(debug = debug)
             if state != False:
                 resp[hall.name] = {
                     "state": True,
